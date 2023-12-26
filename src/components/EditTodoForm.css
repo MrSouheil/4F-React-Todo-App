@@ -1,0 +1,20 @@
+.TodoEditContent {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+}
+
+.TodoEditDetails {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+}
+
+.TodoEditFormContainer {
+    display: flex;
+    gap: 20px;
+    border: 2px black solid;
+    color: white;
+    background-color: #121212;
+    width: 100%;
+}

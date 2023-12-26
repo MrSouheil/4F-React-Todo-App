@@ -1,0 +1,50 @@
+.todo-item.done {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+@keyframes flash {
+
+  0%,
+  100% {
+    background-color: #ffcccc;
+  }
+
+  50% {
+    background-color: #3a3a3a;
+  }
+}
+
+.urgent {
+  animation: flash 2s infinite;
+}
+
+.todo-item {
+  display: flex;
+  padding: 15px;
+  gap: 30px;
+  border: 2px black solid;
+  color: white;
+  background-color: #121212;
+  width: 100%;
+  
+}
+
+.TodoItemContentContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.TodoItemButtonContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 20px;
+}
+
+.TodoItemContainer {
+  display: flex;
+  gap: 50px;
+  justify-content: space-between;
+}

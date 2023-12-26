@@ -1,0 +1,32 @@
+.AddTodoForm {
+    display: flex;
+    width: 100%;
+    /* justify-content: space-between; */
+    gap: 10px;
+}
+
+.TodoFormTitle {
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+
+.TodoFormContent {
+    border-radius: 10px;
+    padding: 5px 10px;
+    resize: none;
+}
+
+.TodoFormSelect {
+    border-radius: 10px;
+    padding: 2px 7px;
+}
+
+.TodoFormDate {
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+
+.TodoFormSubmit {
+    border-radius: 10px;
+    padding: 5px 10px;
+}

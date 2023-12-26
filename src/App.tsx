@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import AddTodoForm from "./components/AddTodoForm";
+import TodoList from "./components/TodoList";
+import SortingControls from "./components/SortingControls";
+import TodoSearch from "./components/SearchTodos";
+import "./App.css";
 
-function App() {
+const App = () => {
+  const [isFormVisible, setFormVisible] = useState(false);
+
+  const toggleFormVisibility = () => {
+    setFormVisible(!isFormVisible);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="TodoPageTitle">
+      <h1>Todo App</h1>
+      </div>
+      <div className="SearchAddContainer">
+        <button onClick={toggleFormVisibility} className="add-button">
+          {isFormVisible ? "Close" : "+ Add Todo"}
+        </button>
+        <div className="SearchContainer">
+        <TodoSearch />
+        </div>
+      </div>
+      {isFormVisible && <AddTodoForm />}
+      <SortingControls />
+      <TodoList />
     </div>
   );
-}
+};
 
 export default App;
