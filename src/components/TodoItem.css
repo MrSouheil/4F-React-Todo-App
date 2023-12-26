@@ -1,6 +1,7 @@
 .todo-item.done {
   text-decoration: line-through;
   opacity: 0.5;
+  animation: none;
 }
 
 @keyframes flash {
@@ -22,11 +23,12 @@
 .todo-item {
   display: flex;
   padding: 15px;
-  gap: 30px;
+  gap: 80px;
   border: 2px black solid;
+  border-radius: 10px;
   color: white;
   background-color: #121212;
-  width: 100%;
+  width: fit-content;
   
 }
 

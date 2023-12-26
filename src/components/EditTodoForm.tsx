@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import useTodoStore from "../store"; // Make sure to import your store correctly
 import "./EditTodoForm.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBan, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
 
 interface EditTodoFormProps {
   id: string;
@@ -25,7 +27,7 @@ const EditTodoForm: React.FC<EditTodoFormProps> = ({
   const [priority, setPriority] = useState(currentPriority);
   const [dueDate, setDueDate] = useState(currentDueDate);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
     e.preventDefault();
     // Perform validation if necessary
     editTodo(id, title, content, priority, dueDate);
@@ -33,7 +35,7 @@ const EditTodoForm: React.FC<EditTodoFormProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="TodoEditFormContainer">
+    <form className="TodoEditFormContainer">
       <div className="TodoEditContent">
         <label htmlFor="title">Title:</label>
         <input
@@ -72,10 +74,10 @@ const EditTodoForm: React.FC<EditTodoFormProps> = ({
         />
       </div>
 
-      <button type="submit">Update Todo</button>
-      <button type="button" onClick={closeForm}>
-        Cancel
-      </button>
+      <div className="TodoEditButtons">
+        <FontAwesomeIcon icon={faSquareCheck} size="xl" onClick={handleSubmit} style={{cursor: 'pointer'}}/>
+        <FontAwesomeIcon icon={faBan} size="xl" onClick={closeForm} style={{cursor: 'pointer'}}/>
+      </div>
     </form>
   );
 };

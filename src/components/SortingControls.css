@@ -1,0 +1,11 @@
+.SortButtonsContainer button {
+    padding: 10px 10px;
+    background-color: white;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+.SortButtonsContainer {
+    display: flex;
+    gap: 20px;
+}

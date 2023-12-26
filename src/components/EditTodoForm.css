@@ -2,19 +2,30 @@
     display: flex;
     flex-direction: column;
     width: fit-content;
+    gap: 15px;
 }
 
 .TodoEditDetails {
     display: flex;
     flex-direction: column;
     width: fit-content;
+    gap: 15px;
 }
 
 .TodoEditFormContainer {
     display: flex;
-    gap: 20px;
+    justify-content: space-around;
+    gap: 40px;
     border: 2px black solid;
+    border-radius: 10px;
     color: white;
     background-color: #121212;
-    width: 100%;
+    width: fit-content;
+    padding: 20px;
+}
+
+.TodoEditButtons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
 }
