@@ -47,6 +47,12 @@
 
 .TodoItemContainer {
   display: flex;
-  gap: 50px;
+  gap:20px;
   justify-content: space-between;
+}
+
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
 }

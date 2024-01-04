@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import useTodoStore from '../store'; // Import your store
+import useTodoStore from '../store';
 import './AddTodoForm.css'
 
 const AddTodoForm = () => {
@@ -12,7 +12,6 @@ const AddTodoForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     addTodo(title, content, priority, dueDate);
-    // Reset the form fields
     setTitle('');
     setContent('');
     setPriority(1);

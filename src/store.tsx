@@ -14,6 +14,7 @@ interface Todo {
 interface TodoState {
   initialTodos: Todo[];
   todos: Todo[];
+  doneTodos: Todo[];
   addTodo: (
     title: string,
     content: string,
@@ -32,15 +33,16 @@ interface TodoState {
   sortByPriority: () => void;
   sortByDueDate: () => void;
   searchTodos: (query: string) => void;
-  // ... other actions
 }
 
 const useTodoStore = create<TodoState>((set) => {
   const initialState = loadFromLocalStorage("todos") || [];
+  const initialDoneState = loadFromLocalStorage("doneTodos") || [];
 
   return {
     initialTodos: [],
     todos: initialState,
+    doneTodos: initialDoneState,
     addTodo: (title, content, priority, dueDate) => {
       set((state) => {
         const newTodo = {
@@ -56,18 +58,27 @@ const useTodoStore = create<TodoState>((set) => {
         return { todos: newTodos };
       });
     },
-    toggleDone: (id) =>
-      set((state) => ({
-        todos: state.todos.map((todo) =>
-          todo.id === id ? { ...todo, done: !todo.done } : todo
-        ),
-      })),
+    toggleDone: (id) => {
+      set((state) => {
+        let updatedTodos, updatedDoneTodos;
+        if (state.todos.some(todo => todo.id === id)) {
+          updatedTodos = state.todos.filter(todo => todo.id !== id);
+          updatedDoneTodos = [...state.doneTodos, ...state.todos.filter(todo => todo.id === id).map(todo => ({ ...todo, done: true }))];
+        } else {
+          updatedDoneTodos = state.doneTodos.filter(todo => todo.id !== id);
+          updatedTodos = [...state.todos, ...state.doneTodos.filter(todo => todo.id === id).map(todo => ({ ...todo, done: false }))];
+        }
+        saveToLocalStorage("todos", updatedTodos);
+        saveToLocalStorage("doneTodos", updatedDoneTodos);
+        return { todos: updatedTodos, doneTodos: updatedDoneTodos };
+      });
+    },
     editTodo: (id, title, content, priority, dueDate) => {
       set((state) => {
         const updatedTodos = state.todos.map((todo) =>
           todo.id === id ? { ...todo, title, content, priority, dueDate } : todo
         );
-        saveToLocalStorage("todos", updatedTodos); // Save updated todos to local storage
+        saveToLocalStorage("todos", updatedTodos);
         return { todos: updatedTodos };
       });
     },
@@ -93,7 +104,7 @@ const useTodoStore = create<TodoState>((set) => {
       set((state) => ({
         todos:
           query.trim() === ""
-            ? state.initialTodos // Return all todos if query is empty
+            ? state.initialTodos
             : state.todos.filter(
                 (todo) =>
                   todo.title.toLowerCase().includes(query.toLowerCase()) ||

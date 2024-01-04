@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import useTodoStore from "../store"; // Make sure to import your store correctly
+import useTodoStore from "../store";
 import "./EditTodoForm.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBan, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
@@ -29,7 +29,6 @@ const EditTodoForm: React.FC<EditTodoFormProps> = ({
 
   const handleSubmit = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
     e.preventDefault();
-    // Perform validation if necessary
     editTodo(id, title, content, priority, dueDate);
     closeForm();
   };
