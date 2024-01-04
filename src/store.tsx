@@ -1,5 +1,6 @@
 import create from "zustand";
 import { v4 as uuidv4 } from "uuid";
+import { loadFromLocalStorage, saveToLocalStorage } from "./components/utils";
 
 interface Todo {
   id: string;
@@ -34,55 +35,73 @@ interface TodoState {
   // ... other actions
 }
 
-const useTodoStore = create<TodoState>((set) => ({
-  initialTodos: [],
-  todos: [],
-  addTodo: (title, content, priority, dueDate) =>
-    set((state) => ({
-        initialTodos: [...state.initialTodos, { id: uuidv4(), title, content, priority, done: false, dueDate }],
-      todos: [
-        ...state.todos,
-        { id: uuidv4(), title, content, priority, done: false, dueDate },
-      ],
-    })),
-  toggleDone: (id) =>
-    set((state) => ({
-      todos: state.todos.map((todo) =>
-        todo.id === id ? { ...todo, done: !todo.done } : todo
-      ),
-    })),
-  editTodo: (id, title, content, priority, dueDate) =>
-    set((state) => ({
-      todos: state.todos.map((todo) =>
-        todo.id === id ? { ...todo, title, content, priority, dueDate } : todo
-      ),
-    })),
-  deleteTodo: (id) =>
-    set((state) => ({
-      todos: state.todos.filter((todo) => todo.id !== id),
-    })),
-  sortByPriority: () =>
-    set((state) => ({
-      todos: [...state.todos].sort((a, b) => a.priority - b.priority),
-    })),
-  sortByDueDate: () =>
-    set((state) => ({
-      todos: [...state.todos].sort(
-        (a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
-      ),
-    })),
-  searchTodos: (query) => {
-    set((state) => ({
-      todos:
-        query.trim() === ""
-          ? state.initialTodos // Return all todos if query is empty
-          : state.todos.filter(
-              (todo) =>
-                todo.title.toLowerCase().includes(query.toLowerCase()) ||
-                todo.content.toLowerCase().includes(query.toLowerCase())
-            ),
-    }));
-  },
-}));
+const useTodoStore = create<TodoState>((set) => {
+  const initialState = loadFromLocalStorage("todos") || [];
+
+  return {
+    initialTodos: [],
+    todos: initialState,
+    addTodo: (title, content, priority, dueDate) => {
+      set((state) => {
+        const newTodo = {
+          id: uuidv4(),
+          title,
+          content,
+          priority,
+          done: false,
+          dueDate,
+        };
+        const newTodos = [...state.todos, newTodo];
+        saveToLocalStorage("todos", newTodos);
+        return { todos: newTodos };
+      });
+    },
+    toggleDone: (id) =>
+      set((state) => ({
+        todos: state.todos.map((todo) =>
+          todo.id === id ? { ...todo, done: !todo.done } : todo
+        ),
+      })),
+    editTodo: (id, title, content, priority, dueDate) => {
+      set((state) => {
+        const updatedTodos = state.todos.map((todo) =>
+          todo.id === id ? { ...todo, title, content, priority, dueDate } : todo
+        );
+        saveToLocalStorage("todos", updatedTodos); // Save updated todos to local storage
+        return { todos: updatedTodos };
+      });
+    },
+    deleteTodo: (id) => {
+      set((state) => {
+        const newTodos = state.todos.filter((todo) => todo.id !== id);
+        saveToLocalStorage("todos", newTodos);
+        return { todos: newTodos };
+      });
+    },
+    sortByPriority: () =>
+      set((state) => ({
+        todos: [...state.todos].sort((a, b) => a.priority - b.priority),
+      })),
+    sortByDueDate: () =>
+      set((state) => ({
+        todos: [...state.todos].sort(
+          (a, b) =>
+            new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
+        ),
+      })),
+    searchTodos: (query) => {
+      set((state) => ({
+        todos:
+          query.trim() === ""
+            ? state.initialTodos // Return all todos if query is empty
+            : state.todos.filter(
+                (todo) =>
+                  todo.title.toLowerCase().includes(query.toLowerCase()) ||
+                  todo.content.toLowerCase().includes(query.toLowerCase())
+              ),
+      }));
+    },
+  };
+});
 
 export default useTodoStore;
